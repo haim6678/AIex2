@@ -1,4 +1,3 @@
-import java.util.Stack;
 
 /**
  * the map class
@@ -18,15 +17,19 @@ public class Map {
 		this.size = mapSize;
 	}
 
-
-
 	/**
 	 * get node representation
 	 */
 	public String getNodeStatus(int x, int y) {
+		if ((x >= this.size) || (x < 0) || (y >= this.size) || (y < 0)) {
+			return null; //todo what will apppend with equals to null
+		}
 		return this.map[x][y];
 	}
 
+	/**
+	 * set a given block on the map
+	 */
 	public void setBlock(int x, int y, String color) {
 		this.map[x][y] = color;
 	}

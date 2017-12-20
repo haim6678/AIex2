@@ -3,17 +3,29 @@ public class GameLogicMeneger {
 	private Map map;
 	private int currCheckingI;
 	private int currCheckingJ;
-	private boolean somthingToMOve = false;
 
 
-	public GameLogicMeneger() {
+	/**
+	 * check if a move is legal
+	 */
+	public boolean checkMove(Map m, int x, int y) {
 
+		if (!m.getNodeStatus(x - 1, y).equals("E")
+				|| (!m.getNodeStatus(x, y - 1).equals("E"))
+				|| (!m.getNodeStatus(x + 1, y).equals("E"))
+				|| (!m.getNodeStatus(x, y + 1).equals("E"))
+				|| (!m.getNodeStatus(x - 1, y - 1).equals("E"))
+				|| (!m.getNodeStatus(x - 1, y + 1).equals("E"))
+				|| (!m.getNodeStatus(x + 1, y - 1).equals("E"))
+				|| (!m.getNodeStatus(x + 1, y + 1).equals("E"))) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
-	 * input - a point,a flag to indicate if the move was good,the player board number
-	 * and a flag if it's my input
-	 * operation - runs the given point and try to change the board
+	 * execure a given move for a given player
 	 */
 	public Map ExecuteMove(int x, int y, String color, Map m) {
 
@@ -21,26 +33,22 @@ public class GameLogicMeneger {
 		this.currCheckingJ = y;
 		this.map = m;
 		//check all possible directions
-		CheckConvertToRight(color, true);
-		CheckConvertToLeft(color, true);
-		CheckConvertToUp(color, true);
-		CheckConvertToDown(color, true);
-		CheckConvertToLeftAndUp(color, true);
-		CheckConvertToLeftAndDown(color, true);
-		CheckConvertToRightAndUp(color, true);
-		CheckConvertToRightAndDown(color, true);
+		CheckConvertToRight(color);
+		CheckConvertToLeft(color);
+		CheckConvertToUp(color);
+		CheckConvertToDown(color);
+		CheckConvertToLeftAndUp(color);
+		CheckConvertToLeftAndDown(color);
+		CheckConvertToRightAndUp(color);
+		CheckConvertToRightAndDown(color);
 
 		return this.map;
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to the right there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute the move to right
 	 */
-	void CheckConvertToRight(String color, boolean act) {
+	void CheckConvertToRight(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -64,26 +72,20 @@ public class GameLogicMeneger {
 
 		//if we found the move legal the change the board and update the flag to 1
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while (startY < endY) {
-					this.map.setBlock(startX, startY, color);
-					startY++;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while (startY < endY) {
+				this.map.setBlock(startX, startY, color);
+				startY++;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to the left there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute move to left
 	 */
-	void CheckConvertToLeft(String color, boolean act) {
+	void CheckConvertToLeft(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -103,28 +105,22 @@ public class GameLogicMeneger {
 			startY--;
 		}
 
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while (startY > endY) {
-					this.map.setBlock(startX, startY, color);
-					startY--;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while (startY > endY) {
+				this.map.setBlock(startX, startY, color);
+				startY--;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to upward there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute move to up
 	 */
-	void CheckConvertToUp(String color, boolean act) {
+	void CheckConvertToUp(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -144,34 +140,26 @@ public class GameLogicMeneger {
 			startX--;
 		}
 
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while (startX > endX) {
-					this.map.setBlock(startX, startY, color);
-					startX--;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while (startX > endX) {
+				this.map.setBlock(startX, startY, color);
+				startX--;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to down there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute novr to down
 	 */
-	void CheckConvertToDown(String color, boolean act) {
+	void CheckConvertToDown(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
 		int startY = this.currCheckingJ;
-		//check if below from the given move there is an empty space or my piece
-		//check if the place is empty
 
 		startX++;
 		while ((endX == -1) && (endY == -1) && (startX < this.map.getSize())) {
@@ -187,28 +175,22 @@ public class GameLogicMeneger {
 			startX++;
 		}
 
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while (startX < endX) {
-					this.map.setBlock(startX, startY, color);
-					startX++;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while (startX < endX) {
+				this.map.setBlock(startX, startY, color);
+				startX++;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to the left and up there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute move to left and up
 	 */
-	void CheckConvertToLeftAndUp(String color, boolean act) {
+	void CheckConvertToLeftAndUp(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -230,29 +212,23 @@ public class GameLogicMeneger {
 			startY--;
 		}
 
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while ((startX > endX) && (startY > endY)) {
-					this.map.setBlock(startX, startY, color);
-					startX--;
-					startY--;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while ((startX > endX) && (startY > endY)) {
+				this.map.setBlock(startX, startY, color);
+				startX--;
+				startY--;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to the left and down there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute move to left and down
 	 */
-	void CheckConvertToLeftAndDown(String color, boolean act) {
+	void CheckConvertToLeftAndDown(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -274,29 +250,23 @@ public class GameLogicMeneger {
 			startY--;
 		}
 
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while ((startX < endX) && (startY > endY)) {
-					this.map.getNodeStatus(startX, startY).equals(color);
-					startX++;
-					startY--;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while ((startX < endX) && (startY > endY)) {
+				this.map.getNodeStatus(startX, startY).equals(color);
+				startX++;
+				startY--;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to the right and up there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute move to right and up
 	 */
-	void CheckConvertToRightAndUp(String color, boolean act) {
+	void CheckConvertToRightAndUp(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -319,29 +289,23 @@ public class GameLogicMeneger {
 			startY++;
 
 		}
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while ((startX > endX) && (startY < endY)) {
-					this.map.setBlock(startX, startY, color);
-					startX--;
-					startY++;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while ((startX > endX) && (startY < endY)) {
+				this.map.setBlock(startX, startY, color);
+				startX--;
+				startY++;
 			}
 		}
 	}
 
 	/**
-	 * input- get the point where thw player locate is new piece,a flag to update if we change
-	 * something,and a flag to say what's my number on board
-	 * operation- checking if from the piece position to the right and down there is a legal move
-	 * (that in the end there a second piece of my kind) if there is - update the
-	 * move flag/
+	 * execute move to right and down
 	 */
-	void CheckConvertToRightAndDown(String color, boolean act) {
+	void CheckConvertToRightAndDown(String color) {
 		int endX = -1;
 		int endY = -1;
 		int startX = this.currCheckingI;
@@ -363,27 +327,23 @@ public class GameLogicMeneger {
 			startY++;
 		}
 
-		//if we found the move legal the change the board and update the flag to 1
+		//if we found the move legal the change the board
 		if ((endX != -1) && (endY != -1)) {
-			this.somthingToMOve = true;
-			if (act) {
-				startX = this.currCheckingI;
-				startY = this.currCheckingJ;
-				while ((startX < endX) && (startY < endY)) {
-					this.map.setBlock(startX, startY, color);
-					startX++;
-					startY++;
-				}
+
+			startX = this.currCheckingI;
+			startY = this.currCheckingJ;
+			while ((startX < endX) && (startY < endY)) {
+				this.map.setBlock(startX, startY, color);
+				startX++;
+				startY++;
 			}
 		}
 	}
 
-
 	/**
-	 * input - a flag that indicate the sort of check we conduct
-	 * operation - check if the board is full, or there is only one color
+	 * check if the board is full, or there is only one color or more from one color
 	 */
-	private boolean CheckWinn(String color) {
+	public boolean CheckWinn(String color) {
 		int white = 0;
 		int black = 0;
 		int empty = 0;
@@ -398,17 +358,17 @@ public class GameLogicMeneger {
 				}
 			}
 		}
-		//todo empty??
-		// איפה ניתן להניח
-		// איך נקבע ניצחון
-
 		return (empty == 0) && ((black > white) && (color.equals("B")) || ((white > black) && (color.equals("W"))));
 	}
 
+	/**
+	 * get the heuristic evaluation in case we are in the middle of the play
+	 */
 	private int calcHuristicNum(Map m) {
 		int numberOfBlack = 0;
 		int numberOfWhite = 0;
-		int hur = 0;
+		int hurb = 0;
+		int hurw = 0;
 		for (int i = 0; i < m.getSize(); i++) {
 			for (int j = 0; j < m.getSize(); j++) {
 				if (m.getNodeStatus(i, j).equals("W")) {
@@ -417,27 +377,45 @@ public class GameLogicMeneger {
 					numberOfBlack++;
 				}
 				if ((i == m.getSize() - 1) || (j == m.getSize()) || (i == 0) | (j == 0)) {
-					hur++;
+					if (m.getNodeStatus(i, j).equals("B")) {
+						hurb++;
+					} else {
+						hurw++;
+					}
 				}
 			}
 		}
-		hur += (numberOfBlack - numberOfWhite);
-		return hur;
+		return (numberOfBlack - numberOfWhite) + (hurb - hurw);
 	}
 
+
+	/**
+	 *get the heuristic number
+	 */
 	public int calcHuristic(Map m) {
 		if (this.CheckWinn("B")) {
 			return Integer.MAX_VALUE;
 		}
-		String other =  "W" ;
+		String other = "W";
 		if (this.CheckWinn(other)) {
 			return Integer.MIN_VALUE;
 		}
 		return this.calcHuristicNum(m);
 	}
 
-	public boolean checkEnd(Map m){
+	/**
+	 *
+	 * check if the game is finished
+	 */
+	public boolean checkEnd(Map m) {
 
-		return false;
+		for (int i = 0; i < m.getSize(); i++) {
+			for (int j = 0; j < m.getSize(); j++) {
+				if (m.getNodeStatus(i, j).equals("E")) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

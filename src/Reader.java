@@ -17,7 +17,7 @@ public class Reader {
 		try (BufferedReader br = new BufferedReader(new FileReader("input.txt"))) {
 			StringBuilder sb = new StringBuilder();
 			String line;
-			int mapsize = 5; //todo change
+			int mapsize = 5;
 			String[][] mapStringArr = new String[mapsize][mapsize];
 			line = br.readLine();
 			int mapStringArrLine = 0;
@@ -32,7 +32,7 @@ public class Reader {
 			map = new Map(mapsize, mapStringArr);
 
 		} catch (Exception e) {
-			//todo handle error
+
 		}
 		return map;
 	}
