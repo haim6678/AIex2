@@ -13,7 +13,7 @@ public class MinMaxAlgo {
 		Point point = null;
 		this.gameMap = m;
 		this.gameLogicMeneger = g;
-		this.minMaxTempMap = m;
+		this.minMaxTempMap = m.clone();
 		ArrayList<Point> pointOptions = new ArrayList<>();
 
 		//run on the empty spaces put a player from the given color
@@ -22,7 +22,7 @@ public class MinMaxAlgo {
 		for (int i = 0; i < this.gameMap.getSize(); i++) {
 			for (int j = 0; j < this.gameMap.getSize(); j++) {
 				if ((this.gameMap.getNodeStatus(i, j).equals("E")) && (this.gameLogicMeneger.checkMove(this.gameMap, i, j))) {
-					this.minMaxTempMap = this.gameMap;
+					this.minMaxTempMap = this.gameMap.clone();
 					this.minMaxTempMap = this.gameLogicMeneger.ExecuteMove(i, j, color, this.minMaxTempMap);
 					int val = (this.minMaxValuePerPoint(this.minMaxTempMap, 2, false, color));
 					pointOptions.add(new Point(i, j, val));
@@ -45,17 +45,16 @@ public class MinMaxAlgo {
 	 * and return the result or the operation
 	 */
 	private int minMaxValuePerPoint(Map map, int depth, boolean maxPlayer, String color) {
-		if ((depth == 0) || (this.gameLogicMeneger.checkEnd(this.minMaxTempMap))) {
-			return this.gameLogicMeneger.calcHuristic(this.minMaxTempMap);
+		if ((depth == 0) || (this.gameLogicMeneger.checkEnd(map))) {
+			return this.gameLogicMeneger.calcHuristic(map);
 		}
 		if (maxPlayer) {
 			int bestVal = Integer.MIN_VALUE;
 			int retVal = 0;
-			for (int i = 0; i < this.gameMap.getSize(); i++) {
-				for (int j = 0; j < this.gameMap.getSize(); j++) {
-					if (this.gameMap.getNodeStatus(i, j).equals("E")) {
-						map = this.gameLogicMeneger.ExecuteMove(i, j, color, map); //todo b?
-						int tempVal = minMaxValuePerPoint(map, depth - 1, false, color);
+			for (int i = 0; i < map.getSize(); i++) {
+				for (int j = 0; j < map.getSize(); j++) {
+					if (map.getNodeStatus(i, j).equals("E") && (this.gameLogicMeneger.checkMove(map, i, j))) {
+						int tempVal = minMaxValuePerPoint(this.gameLogicMeneger.ExecuteMove(i, j, color, map), depth - 1, false, color);
 						retVal = Math.max(bestVal, tempVal);
 					}
 				}
@@ -64,12 +63,11 @@ public class MinMaxAlgo {
 		} else {
 			int bestVal = Integer.MAX_VALUE;
 			int retVal = 0;
-			String other = color.equals("B") ? "w" : "B";
-			for (int i = 0; i < this.gameMap.getSize(); i++) {
-				for (int j = 0; j < this.gameMap.getSize(); j++) {
-					if ((this.gameMap.getNodeStatus(i, j).equals("E")) && (this.gameLogicMeneger.checkMove(this.gameMap, i, j))) {
-						map = this.gameLogicMeneger.ExecuteMove(i, j, other, map);//todo w?
-						int tempVal = minMaxValuePerPoint(map, depth - 1, true, color);
+			String other = color.equals("B") ? "W" : "B";
+			for (int i = 0; i < map.getSize(); i++) {
+				for (int j = 0; j < map.getSize(); j++) {
+					if ((map.getNodeStatus(i, j).equals("E")) && (this.gameLogicMeneger.checkMove(map, i, j))) {
+						int tempVal = minMaxValuePerPoint(this.gameLogicMeneger.ExecuteMove(i, j, other, map), depth - 1, true, color);
 						retVal = Math.min(bestVal, tempVal);
 					}
 				}

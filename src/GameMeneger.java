@@ -21,14 +21,19 @@ public class GameMeneger {
 		int i = 0;
 		while (!this.gameLogicMeneger.checkEnd(this.map)) {
 			Point newMove;
+			Map m = this.map.clone();
 			if ((i % 2) == 0) {
-				newMove = this.minMaxAlgo.getBestMove(this.map, this.gameLogicMeneger, "B");
+				newMove = this.minMaxAlgo.getBestMove(m, this.gameLogicMeneger, "B");
 				this.map = this.gameLogicMeneger.ExecuteMove(newMove.getX(), newMove.getY(), "B", this.map);
 			} else {
-				newMove = this.minMaxAlgo.getBestMove(this.map, this.gameLogicMeneger, "W");
+				newMove = this.minMaxAlgo.getBestMove(m, this.gameLogicMeneger, "W");
 				this.map = this.gameLogicMeneger.ExecuteMove(newMove.getX(), newMove.getY(), "W", this.map);
 			}
 			i++;
+			System.out.println();
+			System.out.print(newMove.getX()+" "+newMove.getY());
+			System.out.println();
+			this.map.print();
 		}
 		return this.gameLogicMeneger.CheckWinn("B") ? "B" : "W";
 	}

@@ -10,14 +10,14 @@ public class GameLogicMeneger {
 	 */
 	public boolean checkMove(Map m, int x, int y) {
 
-		if (!m.getNodeStatus(x - 1, y).equals("E")
-				|| (!m.getNodeStatus(x, y - 1).equals("E"))
-				|| (!m.getNodeStatus(x + 1, y).equals("E"))
-				|| (!m.getNodeStatus(x, y + 1).equals("E"))
-				|| (!m.getNodeStatus(x - 1, y - 1).equals("E"))
-				|| (!m.getNodeStatus(x - 1, y + 1).equals("E"))
-				|| (!m.getNodeStatus(x + 1, y - 1).equals("E"))
-				|| (!m.getNodeStatus(x + 1, y + 1).equals("E"))) {
+		if (((m.getNodeStatus(x - 1, y) != null) && !m.getNodeStatus(x - 1, y).equals("E"))
+				|| ((m.getNodeStatus(x, y - 1) != null) && (!m.getNodeStatus(x, y - 1).equals("E")))
+				|| ((m.getNodeStatus(x + 1, y) != null) && (!m.getNodeStatus(x + 1, y).equals("E")))
+				|| ((m.getNodeStatus(x, y + 1) != null) && (!m.getNodeStatus(x, y + 1).equals("E")))
+				|| ((m.getNodeStatus(x - 1, y - 1) != null) && (!m.getNodeStatus(x - 1, y - 1).equals("E")))
+				|| ((m.getNodeStatus(x - 1, y + 1) != null) && (!m.getNodeStatus(x - 1, y + 1).equals("E")))
+				|| ((m.getNodeStatus(x + 1, y - 1) != null) && (!m.getNodeStatus(x + 1, y - 1).equals("E")))
+				|| ((m.getNodeStatus(x + 1, y + 1) != null) && (!m.getNodeStatus(x + 1, y + 1).equals("E")))) {
 			return true;
 		}
 
@@ -32,6 +32,7 @@ public class GameLogicMeneger {
 		this.currCheckingI = x;
 		this.currCheckingJ = y;
 		this.map = m;
+		m.setBlock(x, y, color);
 		//check all possible directions
 		CheckConvertToRight(color);
 		CheckConvertToLeft(color);
@@ -373,13 +374,13 @@ public class GameLogicMeneger {
 			for (int j = 0; j < m.getSize(); j++) {
 				if (m.getNodeStatus(i, j).equals("W")) {
 					numberOfWhite++;
-				} else {
+				} else if (m.getNodeStatus(i, j).equals("B")) {
 					numberOfBlack++;
 				}
 				if ((i == m.getSize() - 1) || (j == m.getSize()) || (i == 0) | (j == 0)) {
 					if (m.getNodeStatus(i, j).equals("B")) {
 						hurb++;
-					} else {
+					} else if (m.getNodeStatus(i, j).equals("W")) {
 						hurw++;
 					}
 				}
@@ -390,7 +391,7 @@ public class GameLogicMeneger {
 
 
 	/**
-	 *get the heuristic number
+	 * get the heuristic number
 	 */
 	public int calcHuristic(Map m) {
 		if (this.CheckWinn("B")) {
@@ -404,7 +405,6 @@ public class GameLogicMeneger {
 	}
 
 	/**
-	 *
 	 * check if the game is finished
 	 */
 	public boolean checkEnd(Map m) {

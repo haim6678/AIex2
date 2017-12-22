@@ -9,6 +9,23 @@ public class Map {
 	private String[][] map;
 	private int size;
 
+	public Map clone(){
+		String[][] ma = new String[5][5];
+		for (int i=0;i<5;i++){
+			for(int j=0;j<5;j++){
+				ma[i][j] = this.map[i][j];
+			}
+		}
+		return new Map(this.size,ma);
+	}
+	public void print(){
+		for (int i=0;i<5;i++){
+			for(int j=0;j<5;j++){
+				System.out.print(this.map[i][j] );
+			}
+			System.out.println();
+		}
+	}
 	/**
 	 * the constructor
 	 */
